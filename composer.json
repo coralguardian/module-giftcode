@@ -1,0 +1,16 @@
+{
+    "name": "d4rk0snet/gift-code",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "D4rk0snet\\GiftCode\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "d4rk0s",
+            "email": "gregory@d4rk0s.net"
+        }
+    ],
+    "require": {}
+}
