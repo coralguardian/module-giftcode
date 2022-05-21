@@ -1,6 +1,6 @@
 <?php
 
-namespace D4rk0snet\GiftCode;
+namespace D4rk0snet\GiftCode\Entity;
 
 use D4rk0snet\Adoption\Entity\AdoptionEntity;
 use D4rk0snet\Adoption\Entity\GiftAdoption;
