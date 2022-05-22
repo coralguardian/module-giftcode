@@ -28,6 +28,7 @@ class GiftCodeEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="\D4rk0snet\Adoption\Entity\AdoptionEntity")
+     * @ORM\JoinColumn(referencedColumnName="uuid")
      */
     private AdoptionEntity $adoptionEntity;
 
