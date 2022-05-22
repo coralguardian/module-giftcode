@@ -27,12 +27,6 @@ class GiftCodeEntity
     private $uuid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\D4rk0snet\Adoption\Entity\AdoptionEntity")
-     * @ORM\JoinColumn(referencedColumnName="uuid")
-     */
-    private AdoptionEntity $adoptionEntity;
-
-    /**
      * @ORM\Column(type="string", unique=true)
      * @ORM\JoinColumn(referencedColumnName="uuid")
      */
@@ -59,27 +53,18 @@ class GiftCodeEntity
      */
     private GiftAdoption $giftAdoption;
 
-    public function __construct(AdoptionEntity $adoptionEntity, string $giftCode, bool $uniqueUsage)
+    public function __construct(string         $giftCode,
+                                bool           $uniqueUsage,
+                                GiftAdoption   $giftAdoption)
     {
-        $this->adoptionEntity = $adoptionEntity;
         $this->giftCode = $giftCode;
         $this->uniqueUsage = $uniqueUsage;
+        $this->giftAdoption = $giftAdoption;
     }
 
     public function getUuid()
     {
         return $this->uuid;
-    }
-
-    public function getAdoptionEntity(): AdoptionEntity
-    {
-        return $this->adoptionEntity;
-    }
-
-    public function setAdoptionEntity(AdoptionEntity $adoptionEntity): GiftCodeEntity
-    {
-        $this->adoptionEntity = $adoptionEntity;
-        return $this;
     }
 
     public function getGiftCode(): string
