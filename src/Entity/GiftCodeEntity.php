@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\Id;
 
 /**
  * @Entity
+ * @ORM\Table(name="adoption_gift_code")
  */
 class GiftCodeEntity
 {
@@ -32,6 +33,7 @@ class GiftCodeEntity
 
     /**
      * @ORM\Column(type="string", unique=true)
+     * @ORM\JoinColumn(referencedColumnName="uuid")
      */
     private string $giftCode;
 
@@ -52,6 +54,7 @@ class GiftCodeEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="\D4rk0snet\Adoption\Entity\GiftAdoption", inversedBy="giftCodes")
+     * @ORM\JoinColumn(referencedColumnName="uuid")
      */
     private GiftAdoption $giftAdoption;
 
