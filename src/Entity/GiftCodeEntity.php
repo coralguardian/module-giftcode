@@ -45,7 +45,7 @@ class GiftCodeEntity
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTime $when;
+    private ?DateTime $usedOn;
 
     /**
      * @ORM\ManyToOne(targetEntity="\D4rk0snet\Adoption\Entity\GiftAdoption", inversedBy="giftCodes")
@@ -57,6 +57,8 @@ class GiftCodeEntity
                                 bool           $uniqueUsage,
                                 GiftAdoption   $giftAdoption)
     {
+        $this->used = false;
+        $this->usedOn = null;
         $this->giftCode = $giftCode;
         $this->uniqueUsage = $uniqueUsage;
         $this->giftAdoption = $giftAdoption;
@@ -100,14 +102,14 @@ class GiftCodeEntity
         return $this;
     }
 
-    public function getWhen(): ?DateTime
+    public function getUsedOn(): ?DateTime
     {
-        return $this->when;
+        return $this->usedOn;
     }
 
-    public function setWhen(?DateTime $when): GiftCodeEntity
+    public function setUsedOn(?DateTime $usedOn): GiftCodeEntity
     {
-        $this->when = $when;
+        $this->usedOn = $usedOn;
         return $this;
     }
 
