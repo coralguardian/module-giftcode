@@ -61,7 +61,7 @@ class GiftCodeEntity
         $this->usedOn = null;
         $this->giftCode = $giftCode;
         $this->uniqueUsage = $uniqueUsage;
-        $this->giftAdoption = $giftAdoption;
+        $this->setGiftAdoption($giftAdoption);
     }
 
     public function getUuid()
@@ -116,6 +116,13 @@ class GiftCodeEntity
     public function getGiftAdoption(): GiftAdoption
     {
         return $this->giftAdoption;
+    }
+
+    public function setGiftAdoption(GiftAdoption $giftAdoption): GiftCodeEntity
+    {
+        $this->giftAdoption = $giftAdoption;
+        $giftAdoption->addGiftCode($this);
+        return $this;
     }
 
 }
