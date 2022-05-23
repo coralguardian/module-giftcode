@@ -19,13 +19,13 @@ class GetAdoptionWithGiftCode extends APIEnpointAbstract
             return APIManagement::APIError('Missing gift code GET parameter', 400);
         }
 
-        /** @var GiftCodeEntity $giftCodeEntity */
+        /** @var GiftCodeEntity[] $giftCodeEntity */
         $giftCodeEntity = DoctrineService::getEntityManager()->getRepository(GiftCodeEntity::class)->findBy(["giftCode" => $giftCode]);
-        if($giftCodeEntity === null) {
-            return new WP_REST_Response(null, 404);
+        if(count($giftCodeEntity) === 0) {
+            return APIManagement::APINotFound();
         }
 
-        return APIManagement::APIOk(["uuid" => $giftCodeEntity->getGiftAdoption()->getUuid()]);
+        return APIManagement::APIOk(["uuid" => current($giftCodeEntity)->getGiftAdoption()->getUuid()]);
     }
 
     public static function getMethods(): array
