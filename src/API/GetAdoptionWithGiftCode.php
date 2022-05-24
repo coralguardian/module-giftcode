@@ -25,7 +25,13 @@ class GetAdoptionWithGiftCode extends APIEnpointAbstract
             return APIManagement::APINotFound();
         }
 
-        return APIManagement::APIOk(["uuid" => current($giftCodeEntity)->getGiftAdoption()->getUuid()]);
+        $giftAdoption = current($giftCodeEntity)->getGiftAdoption();
+
+        return APIManagement::APIOk([
+            "uuid" => $giftAdoption->getUuid(),
+            "type" => $giftAdoption->getAdoptedProduct()->value,
+            "quantity" => $giftAdoption->getQuantity()
+        ]);
     }
 
     public static function getMethods(): array
