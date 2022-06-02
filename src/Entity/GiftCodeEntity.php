@@ -2,27 +2,25 @@
 
 namespace D4rk0snet\GiftCode\Entity;
 
-use D4rk0snet\Adoption\Entity\AdoptionEntity;
+use D4rk0snet\Adoption\Entity\AdopteeEntity;
+use D4rk0snet\Adoption\Entity\Friend;
 use D4rk0snet\Adoption\Entity\GiftAdoption;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\CustomIdGenerator;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 
 /**
- * @Entity
+ * @ORM\Entity
  * @ORM\Table(name="adoption_gift_code")
  */
 class GiftCodeEntity
 {
     /**
-     * @Id
-     * @Column(type="uuid_binary_ordered_time", unique=true)
-     * @GeneratedValue(strategy="CUSTOM")
-     * @CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator")
+     * @ORM\Id
+     * @ORM\Column(type="uuid_binary_ordered_time", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator")
      */
     private $uuid;
 
@@ -33,9 +31,9 @@ class GiftCodeEntity
     private string $giftCode;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
-    private bool $uniqueUsage;
+    private int $productQuantity;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -49,19 +47,32 @@ class GiftCodeEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="\D4rk0snet\Adoption\Entity\GiftAdoption", inversedBy="giftCodes")
-     * @ORM\JoinColumn(referencedColumnName="uuid")
+     * @ORM\JoinColumn(referencedColumnName="uuid", name="giftAdoption")
      */
     private GiftAdoption $giftAdoption;
 
-    public function __construct(string         $giftCode,
-                                bool           $uniqueUsage,
-                                GiftAdoption   $giftAdoption)
+    /**
+     * @ORM\OneToOne(targetEntity="\D4rk0snet\Adoption\Entity\Friend", mappedBy="giftCode")
+     */
+    private ?Friend $friend = null;
+
+    /**
+     * @ORM\OneToMany(mappedBy="giftCode", targetEntity="\D4rk0snet\Adoption\Entity\AdopteeEntity")
+     */
+    private Collection $adoptees;
+
+    public function __construct(
+        string       $giftCode,
+        GiftAdoption $giftAdoption,
+        int $productQuantity
+    )
     {
         $this->used = false;
         $this->usedOn = null;
         $this->giftCode = $giftCode;
-        $this->uniqueUsage = $uniqueUsage;
         $this->setGiftAdoption($giftAdoption);
+        $this->productQuantity = $productQuantity;
+        $this->adoptees = new ArrayCollection();
     }
 
     public function getUuid()
@@ -80,15 +91,12 @@ class GiftCodeEntity
         return $this;
     }
 
-    public function isUniqueUsage(): bool
+    /**
+     * @return int
+     */
+    public function getProductQuantity(): int
     {
-        return $this->uniqueUsage;
-    }
-
-    public function setUniqueUsage(bool $uniqueUsage): GiftCodeEntity
-    {
-        $this->uniqueUsage = $uniqueUsage;
-        return $this;
+        return $this->productQuantity;
     }
 
     public function isUsed(): bool
@@ -125,4 +133,40 @@ class GiftCodeEntity
         return $this;
     }
 
+    /**
+     * @return Friend|null
+     */
+    public function getFriend(): ?Friend
+    {
+        return $this->friend;
+    }
+
+    /**
+     * @param Friend|null $friend
+     * @return GiftCodeEntity
+     */
+    public function setFriend(?Friend $friend): GiftCodeEntity
+    {
+        $this->friend = $friend;
+        return $this;
+    }
+
+    public function getAdoptees(): Collection
+    {
+        return $this->adoptees;
+    }
+
+    /**
+     * @param ArrayCollection|Collection $adoptees
+     * @return GiftCodeEntity
+     */
+    public function setAdoptees(ArrayCollection|Collection $adoptees): GiftCodeEntity
+    {
+        $this->adoptees = $adoptees;
+        /** @var AdopteeEntity $adoptee */
+        foreach ($adoptees as $adoptee) {
+            $adoptee->setGiftCode($this);
+        }
+        return $this;
+    }
 }
