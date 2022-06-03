@@ -14,4 +14,5 @@ add_filter(\Hyperion\Doctrine\Plugin::ADD_ENTITIES_FILTER, function (array $enti
 
     return $entityPaths;
 });
+add_action('cli_init', [\D4rk0snet\GiftCode\Plugin::class,'addCliCommand']);
 add_action('plugins_loaded', [\D4rk0snet\GiftCode\Plugin::class,'launchActions']);
