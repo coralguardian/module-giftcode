@@ -2,11 +2,15 @@
 
 namespace D4rk0snet\GiftCode\Service;
 
+use D4rk0snet\Adoption\Entity\AdoptionEntity;
+use D4rk0snet\Adoption\Enums\AdoptedProduct;
+
 class GiftCodeService
 {
-    public static function createGiftCode(string $email): string
+    public static function createGiftCode(string $email, AdoptionEntity $adoptionEntity): string
     {
-        return substr(md5($email . random_int(0, PHP_INT_MAX)), 0, 8);
+        $base = $adoptionEntity->getAdoptedProduct() === AdoptedProduct::CORAL ? "coral" : "reef";
+        return $base . substr(md5($email . random_int(0, PHP_INT_MAX)), 0, 8);
     }
 
     public static function exportAsTxt(array $labels, array $items, string $delimiter, string $filename): void
