@@ -9,7 +9,7 @@ class GiftCodeService
 {
     public static function createGiftCode(string $seed, AdoptionEntity $adoptionEntity): string
     {
-        $base = $adoptionEntity->getAdoptedProduct() === AdoptedProduct::CORAL ? "coral" : "reef";
+        $base = $adoptionEntity->getAdoptedProduct() === AdoptedProduct::CORAL ? "CORAL" : "REEF";
         return $base . substr(md5($seed . random_int(0, PHP_INT_MAX)), 0, 8);
     }
 
