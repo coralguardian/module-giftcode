@@ -34,7 +34,8 @@ class GetAdoptionWithGiftCode extends APIEnpointAbstract
         return APIManagement::APIOk([
             "uuid" => $giftAdoption->getUuid(),
             "type" => $giftAdoption->getAdoptedProduct()->value,
-            "quantity" => $giftCodeEntity->getProductQuantity()
+            "quantity" => $giftCodeEntity->getProductQuantity(),
+            "sendToFriend" => null !== $giftCodeEntity->getFriend()
         ]);
     }
 
