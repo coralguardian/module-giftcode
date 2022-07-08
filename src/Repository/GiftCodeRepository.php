@@ -16,10 +16,10 @@ class GiftCodeRepository extends EntityRepository
         $query = $this->getEntityManager()->createQuery(
             '
             SELECT gc
-            FROM \D4rk0snet\Adoption\Entity\GiftCode gc
+            FROM \D4rk0snet\GiftCode\Entity\GiftCodeEntity gc
             JOIN gc.giftAdoption ga
             WHERE ga.sendOn = :today 
-            AND WHERE ga.sendToFriend = :sendToFriend'
+            AND ga.sendToFriend = :sendToFriend'
         );
         $query->setParameter(':today', (new DateTime())->format('Y-m-d'));
         $query->setParameter(':sendToFriend', true);
