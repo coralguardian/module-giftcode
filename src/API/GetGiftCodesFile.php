@@ -13,16 +13,18 @@ use WP_REST_Response;
 
 class GetGiftCodesFile extends APIEnpointAbstract
 {
-    public const ADOPTION_PARAM = "adoption_uuid";
+    public const ADOPTION_PARAM = "stripePaymentIntentId";
 
     public static function callback(WP_REST_Request $request): WP_REST_Response
     {
-        $adoptionUuid = $request->get_param(self::ADOPTION_PARAM);
-        if ($adoptionUuid === null) {
-            return APIManagement::APIError('Missing adoption id GET parameter', 400);
+        $stripePaymentIntentId = $request->get_param(self::ADOPTION_PARAM);
+        if ($stripePaymentIntentId === null) {
+            return APIManagement::APIError('Missing stripePaymentIntentId GET parameter', 400);
         }
         /** @var GiftAdoption $adoptionEntity */
-        $adoptionEntity = DoctrineService::getEntityManager()->getRepository(GiftAdoption::class)->find($adoptionUuid);
+        $adoptionEntity = DoctrineService::getEntityManager()
+            ->getRepository(GiftAdoption::class)
+            ->findOneBy(['stripePaymentIntentId' => $stripePaymentIntentId]);
 
         if ($adoptionEntity === null) {
             return APIManagement::APINotFound();
