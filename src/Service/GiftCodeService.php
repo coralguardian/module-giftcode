@@ -7,9 +7,9 @@ use D4rk0snet\Adoption\Enums\AdoptedProduct;
 
 class GiftCodeService
 {
-    public static function createGiftCode(string $seed, AdoptionEntity $adoptionEntity): string
+    public static function createGiftCode(string $seed, AdoptedProduct $adoptedProduct): string
     {
-        $base = $adoptionEntity->getAdoptedProduct() === AdoptedProduct::CORAL ? "CORAL" : "REEF";
+        $base = $adoptedProduct === AdoptedProduct::CORAL ? "CORAL" : "REEF";
         return $base . substr(md5($seed . random_int(0, PHP_INT_MAX)), 0, 8);
     }
 

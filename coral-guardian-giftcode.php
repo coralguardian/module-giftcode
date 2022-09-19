@@ -9,6 +9,10 @@
  * Author URI:
  * Licence: GPLv2
  */
+
+use D4rk0snet\Adoption\Enums\CoralAdoptionActions;
+use D4rk0snet\GiftCode\Listener\NewGiftAdoptionListener;
+
 add_filter(\Hyperion\Doctrine\Plugin::ADD_ENTITIES_FILTER, function (array $entityPaths) {
     $entityPaths[] = __DIR__."/src/Entity";
 
@@ -16,3 +20,4 @@ add_filter(\Hyperion\Doctrine\Plugin::ADD_ENTITIES_FILTER, function (array $enti
 });
 add_action('cli_init', [\D4rk0snet\GiftCode\Plugin::class,'addCliCommand']);
 add_action('plugins_loaded', [\D4rk0snet\GiftCode\Plugin::class,'launchActions']);
+add_action(CoralAdoptionActions::NEW_GIFT_ADOPTION, [NewGiftAdoptionListener::class, 'doAction'], 10,2);
