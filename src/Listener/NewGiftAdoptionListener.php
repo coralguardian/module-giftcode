@@ -20,7 +20,7 @@ class NewGiftAdoptionListener
     {
         $em = DoctrineService::getEntityManager();
         $newGiftAdoptionEntity = null;
-        $newGiftAdoptionEntity = apply_filter(CoralAdoptionFilters::GET_GIFTADOPTION->value, $newGiftAdoptionEntity, $giftAdoptionEntityUUID);
+        $newGiftAdoptionEntity = apply_filters(CoralAdoptionFilters::GET_GIFTADOPTION->value, $newGiftAdoptionEntity, $giftAdoptionEntityUUID);
 
         //@todo: la condition n'est plus exacte car avec le formulaire complet entreprise/particulier
         // on ne demande plus les info de l'ami avant le paiement
