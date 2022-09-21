@@ -7,6 +7,7 @@ use D4rk0snet\Adoption\Enums\CoralAdoptionFilters;
 use D4rk0snet\Adoption\Models\GiftAdoptionModel;
 use D4rk0snet\CoralCustomer\Enum\CustomerType;
 use D4rk0snet\GiftCode\Entity\GiftCodeEntity;
+use D4rk0snet\GiftCode\Enum\CoralGiftActions;
 use D4rk0snet\GiftCode\Service\GiftCodeService;
 use Exception;
 use Hyperion\Doctrine\Service\DoctrineService;
@@ -33,7 +34,6 @@ class NewGiftAdoptionListener
         } else {
             // il n'y a qu'un ami pour les particuliers
             $friend = current($giftAdoptionModel->getFriends());
-
             $giftCode = self::createGiftCode($giftAdoptionModel->getQuantity(), $newGiftAdoptionEntity);
 
             $friendEntity = new Friend(
@@ -49,6 +49,7 @@ class NewGiftAdoptionListener
         }
 
         $em->flush();
+        do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED);
     }
 
     /**
