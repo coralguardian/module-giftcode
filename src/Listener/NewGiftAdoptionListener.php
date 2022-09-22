@@ -3,6 +3,7 @@
 namespace D4rk0snet\GiftCode\Listener;
 
 use D4rk0snet\Adoption\Entity\Friend;
+use D4rk0snet\Adoption\Entity\GiftAdoption;
 use D4rk0snet\Adoption\Enums\CoralAdoptionFilters;
 use D4rk0snet\Adoption\Models\GiftAdoptionModel;
 use D4rk0snet\CoralCustomer\Enum\CustomerType;
@@ -20,8 +21,7 @@ class NewGiftAdoptionListener
     public static function doAction(GiftAdoptionModel $giftAdoptionModel, string $giftAdoptionEntityUUID) : void
     {
         $em = DoctrineService::getEntityManager();
-        $newGiftAdoptionEntity = null;
-        $newGiftAdoptionEntity = apply_filters(CoralAdoptionFilters::GET_GIFTADOPTION->value, $newGiftAdoptionEntity, $giftAdoptionEntityUUID);
+        $newGiftAdoptionEntity = apply_filters(CoralAdoptionFilters::GET_GIFTADOPTION->value, $giftAdoptionEntityUUID);
 
         //@todo: la condition n'est plus exacte car avec le formulaire complet entreprise/particulier
         // on ne demande plus les info de l'ami avant le paiement
@@ -49,18 +49,18 @@ class NewGiftAdoptionListener
         }
 
         $em->flush();
-        do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED);
+        do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED->value);
     }
 
     /**
      * @throws Exception
      */
-    private static function createGiftCode(int $quantity, $newGiftAdoptionEntity) : GiftCodeEntity
+    private static function createGiftCode(int $quantity, GiftAdoption $newGiftAdoptionEntity) : GiftCodeEntity
     {
         $em = DoctrineService::getEntityManager();
 
         $giftCode = new GiftCodeEntity(
-            giftCode: GiftCodeService::createGiftCode(bin2hex(random_bytes(20)), $newGiftAdoptionEntity),
+            giftCode: GiftCodeService::createGiftCode(bin2hex(random_bytes(20)), $newGiftAdoptionEntity->getAdoptedProduct()),
             giftAdoption: $newGiftAdoptionEntity,
             productQuantity: $quantity
         );
