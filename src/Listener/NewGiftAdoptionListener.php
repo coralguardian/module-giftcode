@@ -2,7 +2,6 @@
 
 namespace D4rk0snet\GiftCode\Listener;
 
-use D4rk0snet\Adoption\Entity\Friend;
 use D4rk0snet\Adoption\Entity\GiftAdoption;
 use D4rk0snet\Adoption\Enums\CoralAdoptionFilters;
 use D4rk0snet\Adoption\Models\GiftAdoptionModel;
@@ -20,7 +19,6 @@ class NewGiftAdoptionListener
      */
     public static function doAction(GiftAdoptionModel $giftAdoptionModel, string $giftAdoptionEntityUUID) : void
     {
-        $em = DoctrineService::getEntityManager();
         $newGiftAdoptionEntity = apply_filters(CoralAdoptionFilters::GET_GIFTADOPTION->value, $giftAdoptionEntityUUID);
 
         //@todo: la condition n'est plus exacte car avec le formulaire complet entreprise/particulier
@@ -33,22 +31,9 @@ class NewGiftAdoptionListener
             }
         } else {
             // il n'y a qu'un ami pour les particuliers
-            $friend = current($giftAdoptionModel->getFriends());
-            $giftCode = self::createGiftCode($giftAdoptionModel->getQuantity(), $newGiftAdoptionEntity);
-
-            $friendEntity = new Friend(
-                friendFirstname: $friend->getFriendFirstname(),
-                friendLastname: $friend->getFriendLastname(),
-                friendEmail: $friend->getFriendEmail(),
-                giftCode: $giftCode
-            );
-
-            $giftCode->setFriend($friendEntity);
-
-            $em->persist($friendEntity);
+            self::createGiftCode($giftAdoptionModel->getQuantity(), $newGiftAdoptionEntity);
         }
 
-        $em->flush();
         do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED->value);
     }
 
@@ -65,6 +50,7 @@ class NewGiftAdoptionListener
             productQuantity: $quantity
         );
         $em->persist($giftCode);
+        $em->flush();
 
         return $giftCode;
     }
