@@ -34,7 +34,7 @@ class NewGiftAdoptionListener
             self::createGiftCode($giftAdoptionModel->getQuantity(), $newGiftAdoptionEntity);
         }
 
-        do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED->value);
+        do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED->value, $newGiftAdoptionEntity);
     }
 
     /**
