@@ -19,19 +19,11 @@ class NewGiftAdoptionListener
      */
     public static function doAction(GiftAdoptionModel $giftAdoptionModel, string $giftAdoptionEntityUUID) : void
     {
+
         $newGiftAdoptionEntity = apply_filters(CoralAdoptionFilters::GET_GIFTADOPTION->value, $giftAdoptionEntityUUID);
 
-        //@todo: la condition n'est plus exacte car avec le formulaire complet entreprise/particulier
-        // on ne demande plus les info de l'ami avant le paiement
-
-        if ($giftAdoptionModel->getCustomerModel()->getCustomerType() === CustomerType::COMPANY) {
-            for ($i = 0; $i < $giftAdoptionModel->getQuantity(); $i++) {
-                self::createGiftCode(1, $newGiftAdoptionEntity);
-                // en mode entreprise on ne renseigne pas les friend au moment de créer la gift adoption
-            }
-        } else {
-            // il n'y a qu'un ami pour les particuliers
-            self::createGiftCode($giftAdoptionModel->getQuantity(), $newGiftAdoptionEntity);
+        for ($i = 0; $i < $giftAdoptionModel->getQuantity(); $i++) {
+            self::createGiftCode($newGiftAdoptionEntity, $newGiftAdoptionEntity);
         }
 
         do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED->value, $newGiftAdoptionEntity);
