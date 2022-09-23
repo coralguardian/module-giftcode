@@ -23,7 +23,7 @@ class NewGiftAdoptionListener
         $newGiftAdoptionEntity = apply_filters(CoralAdoptionFilters::GET_GIFTADOPTION->value, $giftAdoptionEntityUUID);
 
         for ($i = 0; $i < $giftAdoptionModel->getQuantity(); $i++) {
-            self::createGiftCode($newGiftAdoptionEntity, $newGiftAdoptionEntity);
+            self::createGiftCode(1, $newGiftAdoptionEntity);
         }
 
         do_action(CoralGiftActions::GIFTADOPTION_GIFTCODE_CREATED->value, $newGiftAdoptionEntity);
