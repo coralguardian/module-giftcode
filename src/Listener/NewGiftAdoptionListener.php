@@ -5,7 +5,6 @@ namespace D4rk0snet\GiftCode\Listener;
 use D4rk0snet\Adoption\Entity\GiftAdoption;
 use D4rk0snet\Adoption\Enums\CoralAdoptionFilters;
 use D4rk0snet\Adoption\Models\GiftAdoptionModel;
-use D4rk0snet\CoralCustomer\Enum\CustomerType;
 use D4rk0snet\GiftCode\Entity\GiftCodeEntity;
 use D4rk0snet\GiftCode\Enum\CoralGiftActions;
 use D4rk0snet\GiftCode\Service\GiftCodeService;
