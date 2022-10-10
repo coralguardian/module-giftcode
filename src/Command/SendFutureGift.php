@@ -2,6 +2,7 @@
 
 namespace D4rk0snet\GiftCode\Command;
 
+use D4rk0snet\Adoption\Entity\Friend;
 use D4rk0snet\Coralguardian\Event\GiftCodeSent;
 use D4rk0snet\Coralguardian\Event\OwnerScheduledCodeSentNotificationEvent;
 use D4rk0snet\GiftCode\Entity\GiftCodeEntity;
@@ -26,7 +27,9 @@ class SendFutureGift
 
         foreach($giftCodesTosendToday as $giftCode)
         {
-            GiftCodeSent::sendEvent($giftCode);
+            // @bug: Pour une raison obscure, doctrine n'arrive pas à récupérer le friend dans l'association bi-directionnelle one-to-one
+            $friend = DoctrineService::getEntityManager()->getRepository(Friend::class)->findOneBy(['giftCode' => $giftCode->getUuid()]);
+            GiftCodeSent::sendEvent($giftCode, $friend);
             OwnerScheduledCodeSentNotificationEvent::sendEvent($giftCode);
 
             WP_CLI::log("=> Code cadeau de la commande de ".$giftCode->getGiftAdoption()->getCustomer()->getEmail()." envoyé.");
