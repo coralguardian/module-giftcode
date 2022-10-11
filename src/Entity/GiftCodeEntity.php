@@ -26,6 +26,7 @@ class GiftCodeEntity
 
     /**
      * @ORM\Column(type="string", unique=true)
+     * @ORM\JoinColumn(referencedColumnName="uuid")
      */
     private string $giftCode;
 
@@ -53,7 +54,7 @@ class GiftCodeEntity
     /**
      * @ORM\OneToOne(targetEntity="\D4rk0snet\Adoption\Entity\Friend", mappedBy="giftCode")
      */
-    private Friend $friend;
+    private ?Friend $friend = null;
 
     /**
      * @ORM\OneToMany(mappedBy="giftCode", targetEntity="\D4rk0snet\Adoption\Entity\AdopteeEntity")
