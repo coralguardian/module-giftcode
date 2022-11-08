@@ -35,7 +35,8 @@ class GetAdoptionWithGiftCode extends APIEnpointAbstract
             "uuid" => $giftAdoption->getUuid(),
             "type" => $giftAdoption->getAdoptedProduct()->value,
             "quantity" => $giftCodeEntity->getProductQuantity(),
-            "sendToFriend" => null !== $giftCodeEntity->getFriend()
+            "sendToFriend" => null !== $giftCodeEntity->getFriend(),
+            "project" => $giftAdoption->getProject()->value
         ]);
     }
 
